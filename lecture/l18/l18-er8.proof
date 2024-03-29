@@ -1,0 +1,42 @@
+(definec sum (n :nat) :nat
+  (if (zp n)
+     0
+    (+ n (sum (1- n)))))
+
+Conjecture l18-sum-Base:
+(=> (^ (natp n)
+	   (= n 0))
+    (= (sum n) (/ (* n (+ n 1)) 2)))
+
+Context:
+C1. (natp n)
+C2. (= n 0)
+
+Goal: (= (sum n) (/ (* n (+ n 1)) 2))
+
+Proof:
+(sum n)
+= { Def sum, C2, Eval }
+(/ (* n (+ n 1)) 2)
+QED
+
+Conjecture l18-sum-IS:
+(=> (^ (natp n)
+	   (= (sum n) (/ (* n (+ n 1)) 2)))
+    (= (sum (1+ n)) (/ (* (1+ n) (+ (1+ n) 1)) 2)))
+
+Context:
+C1. (natp n)
+C2. (= (sum n) (/ (* n (+ n 1)) 2))
+
+Goal: (= (sum (1+ n)) (/ (* (1+ n) (+ (1+ n) 1)) 2))
+
+Proof:
+(sum (1+ n))
+== { Def sum, C1, Arith }
+(+ (1+ n) (sum n))
+== { C2 }
+(+ (1+ n) (/ (* n (+ n 1)) 2))
+== { Arith }
+(/ (* (1+ n) (+ (1+ n) 1)) 2)
+QED

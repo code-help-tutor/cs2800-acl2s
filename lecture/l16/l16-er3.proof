@@ -1,0 +1,30 @@
+(definec ap (x y :tl) :tl
+  (if (endp x)	
+      y	
+      (cons (car x) (ap (cdr x) y))))
+      
+Conjecture l16:
+(=> (^ (tlp x) (tlp y) (tlp z) (consp x)
+       (== (ap (ap (cdr x) y) z) (ap (cdr x) (ap y z))))
+    (== (ap (ap x y) z) (ap x (ap y z))))
+
+Context:
+C1. (tlp x)
+C2. (tlp y)
+C3. (tlp z)
+C4. (consp x)
+C5. (== (ap (ap (cdr x) y) z) (ap (cdr x) (ap y z)))
+
+Goal: (== (ap (ap x y) z) (ap x (ap y z)))
+
+Proof:
+   (ap (ap x y) z)
+== { Def ap, C4 }
+   (ap (cons (car x) (ap (cdr x) y)) z)
+== { Def ap, cons axioms }
+  (cons (car x) (ap (ap (cdr x) y) z))
+== { C5 }
+  (cons (car x) (ap (cdr x) (ap y z)))
+== { Def ap, C4 }
+  (ap x (ap y z))
+QED

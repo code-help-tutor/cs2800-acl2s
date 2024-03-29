@@ -1,0 +1,47 @@
+(definec ln (l :all) :nat
+  (if (consp l)
+	(+ 1 (ln (cdr l)))
+	0))
+
+Conjecture lec15:
+(== (ln (cons x (list z)))
+    (ln (cons y (list z))))
+
+Goal: (== (ln (cons x (list z)))
+          (ln (cons y (list z))))
+
+Proof:
+(ln (cons x (list z)))
+== { Def ln, car-cdr axioms }
+(+ 1 (ln (list z)))
+== { Def ln, car-cdr axioms }
+(ln (cons y (list z)))
+QED
+
+Conjecture l15-a:
+(== (ln (cons x (list z))) 2)
+
+Goal: (== (ln (cons x (list z))) 2)
+
+Proof:
+(ln (cons x (list z)))
+== { Def ln, car-cdr axioms }
+(+ 1 (ln (list z)))
+== { Def ln, car-cdr axioms }
+2
+QED
+
+Conjecture l15-b:
+(== (ln (cons x (list z)))
+    (ln (cons y (list z))))
+
+Goal: (== (ln (cons x (list z)))
+          (ln (cons y (list z))))
+
+Proof:
+(ln (cons x (list z)))
+== { Theorem l15-a }
+2
+== { Lemma l15-a ((x y)) }
+(ln (cons y (list z)))
+QED

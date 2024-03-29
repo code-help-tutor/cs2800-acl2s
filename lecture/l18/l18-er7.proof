@@ -1,0 +1,58 @@
+(definec ap (x y :tl) :tl
+  (if (endp x)	
+      y	
+      (cons (car x) (ap (cdr x) y))))
+
+; in is built-in. here's the definition
+(definec in (a :all X :tl) :bool 
+  (and (consp X)
+       (or (== a (car X))
+           (in a (cdr X)))))
+           
+Conjecture l17-er7:
+(=> (^ (tlp x)
+       (tlp y))
+    (=> (^ (consp x)
+           (!= a (car x))
+           (=> (tlp (cdr x))
+               (=> (in a (cdr x)) 
+                   (in a (ap (cdr x) y)))))
+        (=> (in a x) 
+            (in a (ap x y)))))
+                
+Exportation:
+(=> (^ (tlp x)
+       (tlp y)
+       (consp x)
+       (!= a (car x))
+       (=> (^ (tlp (cdr x))
+              (in a (cdr x)))
+           (in a (ap (cdr x) y)))
+       (in a x))
+   (in a (ap x y)))
+ 
+Context:
+C1. (tlp x)
+C2. (tlp y)
+C3. (consp x)
+C4. (!= a (car x))
+C5. (=> (^ (tlp (cdr x)) (in a (cdr x)))
+        (in a (ap (cdr x) y)))
+C6. (in a x)
+
+Derived Context:
+D1. (tlp (cdr x)) { Def tlp, C1, C3 }
+D2. (in a (cdr x))  { Def in, C6, C3, C4, PL }
+D3. (in a (ap (cdr x) y)) { MP, C5, D1, D2 }
+
+Goal: (in a (ap x y))
+
+Proof:
+  (in a (ap x y))
+==   { Def ap, C3 }
+  (in a (cons (car x) (ap (cdr x) y)))
+==  { Def in, cons axioms }
+  (or (== a (car x)) (in a (ap (cdr x) y)))
+==  { D3, PL }
+  t
+QED

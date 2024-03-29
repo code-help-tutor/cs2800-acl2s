@@ -1,0 +1,33 @@
+(definec ap (x y :tl) :tl
+  (if (endp x)	
+      y	
+      (cons (car x) (ap (cdr x) y))))
+
+(definec rv (x :tl) :tl
+ (if (endp x) 
+     ()
+    (ap (rv (cdr x)) (list (car x)))))
+
+Conjecture l6-pt2:
+(=> (consp x)
+    (=> (and (tlp x)
+             (tlp y))
+        (=> (endp x)
+            (== (ap x y) (rv y)))))
+
+Exportation:
+(=> (^ (consp x)
+       (tlp x)
+       (tlp y)
+       (endp x))
+    (== (ap x y) (rv y)))
+    
+Context:
+C1. (consp x)
+C2. (tlp x)
+C3. (tlp y)
+C4. (endp x)
+
+Derived Context:
+D1. nil { C4, C1 }
+QED

@@ -1,0 +1,68 @@
+(definec ap (x y :tl) :tl
+  (if (endp x)
+      y
+    (cons (car x) (ap (cdr x) y))))
+
+Conjecture T0:
+(=> (^ (tlp a) (tlp b) (tlp c))
+	(== (ap (ap a b) c) (ap a (ap b c))))
+
+Proof by: Induction on (tlp a)
+
+Base Case 1:
+(=> (^ (tlp a)
+       (tlp b)
+       (tlp c)
+       (! (consp a)))
+    (== (ap (ap a b) c) (ap a (ap b c))))
+    
+Context:
+C1. (tlp a)
+C2. (tlp b)
+C3. (tlp c)
+C4. (! (consp a))
+
+Goal: (== (ap (ap a b) c) (ap a (ap b c)))
+
+Proof:
+(ap (ap a b) c)
+== { Def ap, C4 }
+(ap b c)
+== { Def ap, C4 }
+(ap a (ap b c))
+QED
+
+Induction Case 1:
+(=> (^ (tlp x) (tlp y) (consp x)
+     (=> (^ (tlp (cdr x)) (tlp y))
+         (== (in a (ap (cdr x) y)) (v (in a (cdr x)) (in a y)))))
+    (== (in a (ap x y)) (v (in a x) (in a y))))
+
+Context:
+C1. (tlp x)
+C2. (tlp y)
+C3. (consp x)
+
+Derived Context:
+D1. (tlp (cdr x)) { Def tlp, C1, C3 }
+D2. (== (in a (ap (cdr x) y)) (v (in a (cdr x)) (in a y))) 
+    { D1 }
+
+Goal:
+(== (in a (ap x y)) (v (in a x) (in a y)))
+
+Proof:
+(in a (ap x y))
+== { Def ap, C3 }
+(in a (cons (car x) (ap (cdr x) y)))
+== { Def in }
+(v (== a (car x)) (in a (ap (cdr x) y)))
+== { D2 }
+(v (in a x) (in a y))
+QED
+QED
+
+
+
+
+

@@ -1,0 +1,27 @@
+(definec ap (x y :tl) :tl
+  (if (endp x)	
+      y	
+      (cons (car x) (ap (cdr x) y))))
+		
+Conjecture ap1:
+(=> (^ (tlp x) (tlp y) (tlp z) (endp x)) 
+    (== (ap (ap x y) z) (ap x (ap y z))))
+   
+Context:
+C1. (tlp x)
+C2. (tlp y)
+C3. (tlp z)
+C4. (endp x)
+
+Derived Context:
+D1. (== x nil) {C4}
+
+Goal: (== (ap (ap x y) z) (ap x (ap y z)))
+
+Proof: 
+   (ap (ap x y) z) 
+== { Def ap, D1 }
+   (ap y z) 
+== { Def ap, D1 }
+   (ap x (ap y z))
+QED

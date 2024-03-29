@@ -1,0 +1,54 @@
+(definec del (a :all X :tl) :tl
+  (cond ((endp X) X)
+        ((== a (car X)) (del a (cdr X)))
+        (t (cons (car X) (del a (cdr X))))))
+
+; in is built-in. here's the definition
+(definec in (a :all X :tl) :bool 
+  (and (consp X)
+       (or (== a (car X))
+           (in a (cdr X)))))
+           
+; Here is an interesting theorem.
+(property (a :all X :tl)
+  (! (in a (del a X))))
+
+; Here are the two inductive steps
+Conjecture l19-1:
+(=> (^ (tlp x)
+       (! (endp x))
+       (!= a (car x))
+       (=> (tlp (cdr x))
+           (! (in a (del a (cdr x))))))
+    (=> (tlp x)
+        (! (in a (del a x)))))
+        
+Exportation:
+(=> (^ (tlp x)
+       (! (endp x))
+       (!= a (car x))
+       (=> (tlp (cdr x))
+           (! (in a (del a (cdr x))))))
+    (! (in a (del a x))))
+    
+Context:
+C1. (tlp x)
+C2. (! (endp x))
+C3. (!= a (car x))
+C4. (=> (tlp (cdr x))
+        (! (in a (del a (cdr x)))))
+        
+Derived Context:
+D1. (tlp (cdr x)) {C1}
+D2. (! (in a (del a (cdr x)))) {Def in, DEf del, C4, D1}
+
+Goal: (! (in a (del a x)))
+
+Proof:
+(! (in a (del a x)))
+== {Def del, C1, C2, C3}
+(! (in a (del a (cdr X))))
+== {D2}
+t
+
+QED

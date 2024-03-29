@@ -1,0 +1,31 @@
+(definec ap (x y :tl) :tl
+  (if (endp x)	
+      y	
+      (cons (car x) (ap (cdr x) y))))
+      
+; in is built-in. here's the definition
+(definec in (a :all X :tl) :bool 
+  (and (consp X)
+       (or (== a (car X))
+           (in a (cdr X)))))
+           
+Conjecture l17-er5:
+(=> (^ (tlp x) (tlp y)) 
+    (=> (endp x)  
+        (=> (! (in a (ap x y)))
+            (! (in a x)))))
+            
+Exportation: 
+(=> (^ (tlp x) (tlp y) (endp x) (in a x)) 
+       (in a (ap x y)))
+
+Context:
+C1.(tlp x) 
+C2.(tlp y)
+C3.(endp x)
+C4.(in a x)
+
+Derived Context:
+D1. nil   { Def in, C4, C3 }
+
+QED
